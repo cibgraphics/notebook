@@ -1,0 +1,14 @@
+{
+  "resources/css/cp.css": {
+    "file": "assets/cp.css",
+    "name": "cp",
+    "src": "resources/css/cp.css",
+    "isEntry": true
+  },
+  "resources/js/cp.js": {
+    "file": "assets/cp-native-ui.js",
+    "name": "cp",
+    "src": "resources/js/cp.js",
+    "isEntry": true
+  }
+}
