@@ -6,12 +6,11 @@ use Cibgraphics\Notebook\Services\SettingsStore;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
+use Statamic\Facades\User;
 
 class NotebookSettingsController extends Controller
 {
-    public function __construct(private SettingsStore $settings)
-    {
-    }
+    public function __construct(private SettingsStore $settings) {}
 
     public function edit()
     {
@@ -45,6 +44,6 @@ class NotebookSettingsController extends Controller
 
     protected function authorizeManage(): void
     {
-        abort_unless(optional(\Statamic\Facades\User::current())->can('manage notebook'), 403);
+        abort_unless(optional(User::current())->can('manage notebook'), 403);
     }
 }

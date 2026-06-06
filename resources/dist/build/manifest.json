@@ -2,6 +2,9 @@
   "resources/css/cp.css": {
     "file": "assets/cp.css",
     "name": "cp",
+    "names": [
+      "cp.css"
+    ],
     "src": "resources/css/cp.css",
     "isEntry": true
   },

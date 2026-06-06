@@ -17,9 +17,7 @@ class NotebookController extends Controller
     public function __construct(
         private NoteStore $notes,
         private SettingsStore $settings,
-    )
-    {
-    }
+    ) {}
 
     public function index(Request $request)
     {

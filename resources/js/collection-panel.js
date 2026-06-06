@@ -280,7 +280,7 @@ function statamicPermissions() {
     if (typeof permissions === "string") {
       return JSON.parse(atob(permissions));
     }
-  } catch (error) {
+  } catch {
     return [];
   }
 

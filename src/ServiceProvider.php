@@ -10,7 +10,7 @@ use Statamic\Providers\AddonServiceProvider;
 class ServiceProvider extends AddonServiceProvider
 {
     protected $scripts = [
-        __DIR__.'/../resources/dist/build/assets/cp-native-ui-collection.js',
+        __DIR__.'/../resources/dist/build/assets/cp-native-ui.js',
     ];
 
     protected $stylesheets = [
@@ -28,7 +28,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $config = false;
 
-    public function bootAddon()
+    public function bootAddon(): void
     {
         Permission::extend(function () {
             Permission::group('notebook', 'Notebook', function () {

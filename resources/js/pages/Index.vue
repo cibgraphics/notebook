@@ -1,5 +1,5 @@
 <script setup>
-import { computed, reactive, ref, watch } from "vue";
+import { computed, onBeforeUnmount, reactive, ref, watch } from "vue";
 import { Head, router } from "@inertiajs/vue3";
 import { Badge, Button, Field, Header, Input, Panel, PublishContainer, Select, Stack } from "@ui";
 
@@ -154,38 +154,40 @@ function deleteNote(note) {
   router.delete(note.delete_url, { preserveScroll: true });
 }
 
-function applyFilters() {
+function refreshNotes() {
   router.get(props.routes.current, cleanParams({ ...activeFilters, search: searchForm.search }), {
     preserveState: true,
     preserveScroll: true,
   });
 }
 
-function applySearch() {
-  router.get(props.routes.current, cleanParams({ ...activeFilters, search: searchForm.search }), {
-    preserveState: true,
-    preserveScroll: true,
-  });
+function applyFilters() {
+  refreshNotes();
+  showingFiltersStack.value = false;
 }
 
 function clearSearch() {
   searchForm.search = "";
-  applySearch();
+  refreshNotes();
 }
 
 function clearFilters() {
   activeFilters.status = null;
   activeFilters.category = null;
-  applyFilters();
+  refreshNotes();
 }
 
 watch(
   () => searchForm.search,
   () => {
     clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(applySearch, 300);
+    searchTimeout = setTimeout(refreshNotes, 300);
   },
 );
+
+onBeforeUnmount(() => {
+  clearTimeout(searchTimeout);
+});
 
 function cleanParams(params) {
   return Object.fromEntries(Object.entries(params).filter(([, value]) => value));
@@ -355,7 +357,7 @@ function hexToRgba(hex, alpha) {
             <Button
               text="Apply Filters"
               variant="primary"
-              @click="applyFilters(); showingFiltersStack = false"
+              @click="applyFilters"
             />
             <Button text="Clear Filters" variant="ghost" @click="clearFilters" />
           </div>
