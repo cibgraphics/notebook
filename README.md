@@ -1,41 +1,5 @@
 # Notebook
 
-Notebook is a small Statamic 6 Control Panel addon for saving small notes.
-Notes are stored as JSON files in:
-
-```txt
-storage/statamic-notebook/notes
-```
-
-Editable addon options are stored in:
-
-```txt
-storage/statamic-notebook/settings.json
-```
-
-## Features
-
-- Control Panel nav item named "Notebook"
-- Global CP page for listing, filtering, creating, editing, and deleting notes
-- Dynamic collection notebook pages for each Statamic collection
-- Note panel button on collection list and create/edit entry screens
-- Pagination on the notebook list and collection side panel
-- Settings page for editing categories, statuses, and status colors
-- Default categories: Article, Marketing, Website, General
-- Default statuses: New, Thinking, Ready, Archived
-- One JSON file per note
-
-Each note stores:
-
-- `id`
-- `title`
-- `notes`
-- `collection`
-- `category`
-- `status`
-- `created_at`
-- `updated_at`
-
 ## Installation
 
 Install the addon with Composer:
@@ -51,6 +15,22 @@ If the assets are missing or you need to refresh them manually, run:
 php artisan vendor:publish --tag=statamic-notebook --force
 php artisan optimize:clear
 ```
+
+## About
+
+Notebook is a small Statamic 6 Control Panel addon for saving notes in the CP. It adds a global Notebook page and collection-specific note panels so you can keep editorial notes close to the content they belong to.
+
+## Features
+
+- Control Panel nav item named "Notebook"
+- Global CP page for listing, filtering, creating, editing, and deleting notes
+- Dynamic collection notebook pages for each Statamic collection
+- Note panel button on collection list and create/edit entry screens
+- Pagination on the notebook list and collection side panel
+- Settings page for editing categories, statuses, and status colors
+- Default categories: Article, Marketing, Website, General
+- Default statuses: New, Thinking, Ready, Archived
+- One JSON file per note
 
 ## Usage
 
@@ -78,6 +58,17 @@ Editable addon options are stored at:
 ```txt
 storage/statamic-notebook/settings.json
 ```
+
+Each note stores:
+
+- `id`
+- `title`
+- `notes`
+- `collection`
+- `category`
+- `status`
+- `created_at`
+- `updated_at`
 
 ## Development
 
