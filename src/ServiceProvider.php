@@ -18,6 +18,8 @@ class ServiceProvider extends AddonServiceProvider
         'hotFile' => __DIR__.'/../resources/dist/hot',
     ];
 
+    protected $publishAfterInstall = true;
+
     protected $config = false;
 
     public function bootAddon(): void

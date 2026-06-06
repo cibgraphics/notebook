@@ -44,7 +44,8 @@ Install the addon with Composer:
 composer require cibgraphics/statamic-notebook
 ```
 
-Publish the Control Panel assets:
+Control Panel assets are configured to publish automatically through Statamic's addon install flow.
+If the assets are missing or you need to refresh them manually, run:
 
 ```bash
 php artisan vendor:publish --tag=statamic-notebook --force
