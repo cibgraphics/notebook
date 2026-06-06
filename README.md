@@ -51,9 +51,44 @@ php artisan vendor:publish --tag=statamic-notebook --force
 php artisan optimize:clear
 ```
 
+## Usage
+
+Open **Tools > Notebook** in the Statamic Control Panel to create, search, filter, edit, and delete notes.
+
+The addon also adds a notebook button to collection list and entry create/edit screens. That panel shows notes scoped to the current collection and links back to the full Notebook page.
+
 Super users can use the addon immediately. For non-super users, grant these permissions from Statamic's role/user screens:
 
 - View Notebook
 - Manage Notebook
 
 View-only users can open and read the notebook. Manage users can create, edit, delete, and update settings.
+
+## Storage
+
+Notes are stored as JSON files:
+
+```txt
+storage/statamic-notebook/notes
+```
+
+Editable addon options are stored at:
+
+```txt
+storage/statamic-notebook/settings.json
+```
+
+## Development
+
+Build Control Panel assets from the addon directory:
+
+```bash
+npm install
+npm run build
+```
+
+Run the local Statamic test harness from the project root:
+
+```bash
+php artisan test
+```

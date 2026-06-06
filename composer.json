@@ -1,7 +1,6 @@
 {
   "name": "cibgraphics/statamic-notebook",
   "description": "A tiny Statamic Control Panel Notebook.",
-  "version": "0.1.0",
   "type": "statamic-addon",
   "license": "MIT",
   "authors": [
