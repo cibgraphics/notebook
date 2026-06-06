@@ -14,7 +14,7 @@ class SettingsStore
     ];
 
     public const DEFAULT_STATUSES = [
-        ['label' => 'New', 'color' => '#2563eb'],
+        ['label' => 'New', 'color' => '#6c97f4'],
         ['label' => 'Thinking', 'color' => '#d97706'],
         ['label' => 'Ready', 'color' => '#16a34a'],
         ['label' => 'Archived', 'color' => '#6b7280'],

@@ -94,69 +94,94 @@ function mountPanel() {
           },
           () => [
             h("div", { class: "space-y-4" }, [
-              h("div", { class: "flex flex-wrap items-center gap-2" }, [
-                h(Button, {
-                  as: "a",
-                  text: "Open Notebook",
-                  icon: "external-link",
-                  href: notebookUrl.value,
-                  variant: "primary",
-                  disabled: !notebookUrl.value,
-                }),
-              ]),
               loading.value
                 ? h("p", { class: "text-sm text-gray-600 dark:text-gray-400" }, "Loading notes...")
                 : notes.value.length
-                  ? notes.value.map((note) =>
-                      h(
-                        "div",
-                        {
-                          key: note.id,
-                          class:
-                            "border-b border-gray-200 dark:border-gray-700 pb-4 last:border-0 last:pb-0 space-y-2",
-                        },
-                        [
-                          h(
-                            "h3",
-                            { class: "font-medium text-gray-900 dark:text-gray-100" },
-                            note.title,
-                          ),
-                          note.notes
-                            ? h(
-                                "div",
-                                {
-                                  class:
-                                    "notebook-rich-content text-sm text-gray-700 dark:text-gray-300",
-                                  innerHTML: note.notes,
-                                },
-                              )
-                            : null,
-                          h("div", { class: "flex flex-wrap items-center justify-between gap-2" }, [
-                            h("div", { class: "flex flex-wrap items-center gap-2" }, [
-                              h(Badge, { text: note.category }),
-                              h(
-                                "span",
-                                {
-                                  class:
-                                    "inline-flex items-center rounded border px-2 py-0.5 text-xs font-medium",
-                                  style: statusStyle(statusColors.value[note.status]),
-                                },
-                                note.status,
-                              ),
+                  ? h(
+                      "div",
+                      { class: "divide-y divide-gray-200 dark:divide-gray-700" },
+                      notes.value.map((note) =>
+                        h(
+                          "div",
+                          {
+                            key: note.id,
+                            class: "py-4 first:pt-0 last:pb-0",
+                          },
+                          [
+                            h("div", { class: "flex items-start justify-between gap-3" }, [
+                              h("div", { class: "min-w-0 space-y-2" }, [
+                                h(
+                                  "h3",
+                                  { class: "font-medium text-gray-900 dark:text-gray-100" },
+                                  note.title,
+                                ),
+                                note.notes
+                                  ? h(
+                                      "div",
+                                      {
+                                        class:
+                                          "notebook-rich-content text-sm text-gray-700 dark:text-gray-300",
+                                        innerHTML: note.notes,
+                                      },
+                                    )
+                                  : null,
+                                h("div", { class: "flex flex-wrap items-center gap-2" }, [
+                                  h(Badge, { text: note.category }),
+                                  h(
+                                    "span",
+                                    {
+                                      class:
+                                        "inline-flex items-center rounded border px-2 py-0.5 text-xs font-medium",
+                                      style: statusStyle(statusColors.value[note.status]),
+                                    },
+                                    note.status,
+                                  ),
+                                  h(
+                                    "span",
+                                    { class: "text-xs text-gray-600 dark:text-gray-400" },
+                                    `Updated ${formatUpdatedAt(note.updated_at)}`,
+                                  ),
+                                ]),
+                              ]),
+                              canManage
+                                ? h(
+                                    "button",
+                                    {
+                                      type: "button",
+                                      class:
+                                        "inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded text-gray-500 transition hover:bg-red-100 hover:text-red-700 active:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500/40 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:text-gray-400 dark:hover:bg-red-950/60 dark:hover:text-red-300 dark:active:bg-red-950",
+                                      title: "Delete note",
+                                      "aria-label": `Delete ${note.title}`,
+                                      disabled: deletingId.value === note.id,
+                                      onClick: () => deleteNote(note),
+                                    },
+                                    [
+                                      h(
+                                        "svg",
+                                        {
+                                          viewBox: "0 0 24 24",
+                                          fill: "none",
+                                          stroke: "currentColor",
+                                          "stroke-width": "2",
+                                          "stroke-linecap": "round",
+                                          "stroke-linejoin": "round",
+                                          class: "h-4 w-4",
+                                          "aria-hidden": "true",
+                                        },
+                                        [
+                                          h("path", { d: "M3 6h18" }),
+                                          h("path", { d: "M8 6V4h8v2" }),
+                                          h("path", { d: "M19 6l-1 16H6L5 6" }),
+                                          h("path", { d: "M10 11v6" }),
+                                          h("path", { d: "M14 11v6" }),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                : null,
                             ]),
-                            canManage
-                              ? h(Button, {
-                                  text: "Delete",
-                                  icon: "trash",
-                                  size: "sm",
-                                  variant: "danger",
-                                  loading: deletingId.value === note.id,
-                                  disabled: deletingId.value === note.id,
-                                  onClick: () => deleteNote(note),
-                                })
-                              : null,
-                          ]),
-                        ],
+                          ],
+                        ),
                       ),
                     )
                   : h(
@@ -164,38 +189,49 @@ function mountPanel() {
                       { class: "text-sm text-gray-600 dark:text-gray-400" },
                       "No notes saved for this collection yet.",
                     ),
-              pagination.value && pagination.value.last_page > 1
-                ? h("div", { class: "pt-2 flex flex-wrap items-center justify-between gap-2" }, [
-                    h(
-                      "p",
-                      { class: "text-sm text-gray-600 dark:text-gray-400" },
-                      `${pagination.value.from}-${pagination.value.to} of ${pagination.value.total}`,
-                    ),
-                    h("div", { class: "flex flex-wrap items-center gap-2" }, [
-                      h(Button, {
-                        text: "Previous",
-                        icon: "chevron-left",
-                        size: "sm",
-                        disabled: !pagination.value.prev_url || loading.value,
-                        onClick: () =>
-                          loadNotes(currentHandle.value, pagination.value.current_page - 1),
-                      }),
-                      h(
-                        "span",
-                        { class: "text-sm text-gray-600 dark:text-gray-400" },
-                        `${pagination.value.current_page} / ${pagination.value.last_page}`,
-                      ),
-                      h(Button, {
-                        text: "Next",
-                        icon: "chevron-right",
-                        size: "sm",
-                        disabled: !pagination.value.next_url || loading.value,
-                        onClick: () =>
-                          loadNotes(currentHandle.value, pagination.value.current_page + 1),
-                      }),
-                    ]),
-                  ])
-                : null,
+              h(
+                "div",
+                {
+                  class:
+                    "border-t border-gray-200 dark:border-gray-700 pt-4 flex flex-wrap items-center justify-between gap-3",
+                },
+                [
+                  pagination.value && pagination.value.last_page > 1
+                    ? h("div", { class: "flex flex-wrap items-center gap-2" }, [
+                        h(Button, {
+                          text: "Previous",
+                          icon: "chevron-left",
+                          size: "sm",
+                          disabled: !pagination.value.prev_url || loading.value,
+                          onClick: () =>
+                            loadNotes(currentHandle.value, pagination.value.current_page - 1),
+                        }),
+                        h(
+                          "span",
+                          { class: "text-sm text-gray-600 dark:text-gray-400" },
+                          `${pagination.value.current_page} / ${pagination.value.last_page}`,
+                        ),
+                        h(Button, {
+                          text: "Next",
+                          iconAppend: "chevron-right",
+                          size: "sm",
+                          disabled: !pagination.value.next_url || loading.value,
+                          onClick: () =>
+                            loadNotes(currentHandle.value, pagination.value.current_page + 1),
+                        }),
+                      ])
+                    : h("span"),
+                  h(Button, {
+                    as: "a",
+                    text: "View all notes",
+                    icon: "external-link",
+                    href: notebookUrl.value,
+                    size: "sm",
+                    variant: "ghost",
+                    disabled: !notebookUrl.value,
+                  }),
+                ],
+              ),
             ]),
           ],
         );
@@ -232,7 +268,7 @@ function injectTrigger(panel) {
   button.title = "Open Notebook";
   button.setAttribute("aria-label", "Open Notebook");
   button.innerHTML =
-    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 22h4M8.7 15.2a7 7 0 1 1 6.6 0c-.8.5-1.3 1.4-1.3 2.3h-4c0-.9-.5-1.8-1.3-2.3Z"/></svg>';
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h13a2 2 0 0 1 2 2v16H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Z"/><path d="M6 3v18"/><path d="M10 8h6"/><path d="M10 12h6"/></svg>';
   button.addEventListener("click", () => panel.open(handle));
 
   actions.insertBefore(button, target || actions.firstChild);
@@ -320,6 +356,19 @@ function hexToRgba(hex, alpha) {
   const blue = parseInt(value.slice(4, 6), 16);
 
   return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+}
+
+function formatUpdatedAt(value) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(date);
 }
 
 async function requestJson(url) {

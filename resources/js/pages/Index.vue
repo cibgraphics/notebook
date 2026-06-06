@@ -212,6 +212,19 @@ function hexToRgba(hex, alpha) {
 
   return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
 }
+
+function formatUpdatedAt(value) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(date);
+}
 </script>
 
 <template>
@@ -464,9 +477,9 @@ function hexToRgba(hex, alpha) {
               >
                 {{ note.status }}
               </span>
-              <span class="text-xs text-gray-600 dark:text-gray-400"
-                >Updated {{ note.updated_at }}</span
-              >
+              <span class="text-xs text-gray-600 dark:text-gray-400">
+                Updated {{ formatUpdatedAt(note.updated_at) }}
+              </span>
             </div>
           </div>
         </Panel>
@@ -489,7 +502,7 @@ function hexToRgba(hex, alpha) {
               </span>
               <Button
                 text="Next"
-                icon="chevron-right"
+                icon-append="chevron-right"
                 :href="pagination.next_url"
                 :disabled="!pagination.next_url"
               />

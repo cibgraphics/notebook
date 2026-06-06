@@ -6,6 +6,7 @@ export default defineConfig({
     plugins: [vue()],
     resolve: {
         alias: {
+            vue: resolve(__dirname, 'resources/js/statamic/vue.js'),
             '@inertiajs/vue3': resolve(__dirname, 'resources/js/statamic/inertia.js'),
             '@ui': resolve(__dirname, 'resources/js/statamic/ui.js'),
             '@statamic/cms/index.js': resolve(__dirname, 'resources/js/statamic/core.js'),

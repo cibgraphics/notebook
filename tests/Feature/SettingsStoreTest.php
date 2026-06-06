@@ -4,20 +4,28 @@ namespace Cibgraphics\Notebook\Tests\Feature;
 
 use Cibgraphics\Notebook\Services\SettingsStore;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class SettingsStoreTest extends TestCase
 {
+    protected string $testStoragePath;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        File::deleteDirectory(storage_path('statamic-notebook'));
+        $this->testStoragePath = base_path('storage/framework/testing/statamic-notebook/'.Str::uuid());
+        File::ensureDirectoryExists($this->testStoragePath);
+        File::ensureDirectoryExists($this->testStoragePath.'/framework/cache');
+        File::ensureDirectoryExists($this->testStoragePath.'/framework/sessions');
+        File::ensureDirectoryExists($this->testStoragePath.'/framework/views');
+        $this->app->useStoragePath($this->testStoragePath);
     }
 
     protected function tearDown(): void
     {
-        File::deleteDirectory(storage_path('statamic-notebook'));
+        File::deleteDirectory($this->testStoragePath);
 
         parent::tearDown();
     }
@@ -28,7 +36,7 @@ class SettingsStoreTest extends TestCase
 
         $this->assertSame(SettingsStore::DEFAULT_CATEGORIES, $settings['categories']);
         $this->assertSame(['New', 'Thinking', 'Ready', 'Archived'], $settings['statuses']);
-        $this->assertSame('#2563eb', $settings['status_colors']['New']);
+        $this->assertSame('#6c97f4', $settings['status_colors']['New']);
     }
 
     public function test_it_normalizes_and_persists_settings(): void

@@ -9,14 +9,6 @@ use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
 {
-    protected $scripts = [
-        __DIR__.'/../resources/dist/build/assets/cp-native-ui.js',
-    ];
-
-    protected $stylesheets = [
-        __DIR__.'/../resources/dist/build/assets/cp.css',
-    ];
-
     protected $vite = [
         'input' => [
             'resources/js/cp.js',

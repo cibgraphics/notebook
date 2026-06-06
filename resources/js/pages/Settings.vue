@@ -45,14 +45,17 @@ onBeforeUnmount(() => {
 });
 
 function saveSettings() {
+  if (saving.value) return;
+
   saving.value = true;
-  Statamic.$dirty.remove(dirtyKey);
+  Statamic.$dirty.state(dirtyKey, false);
+  Statamic.$dirty.disableWarning();
 
   router.patch(props.routes.settings, payload.value, {
     preserveScroll: true,
     onSuccess: () => {
       savedPayload.value = serializedPayload.value;
-      Statamic.$dirty.remove(dirtyKey);
+      Statamic.$dirty.state(dirtyKey, false);
     },
     onFinish: () => {
       saving.value = false;
